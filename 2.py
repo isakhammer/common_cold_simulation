@@ -1,38 +1,63 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
-print("hello")
 
+
+def gauss_process(t_a, mu_a, t_b, mu_b, x_b, sigma=0.5**2, phi=15):
+
+    print("shapes")
+    print(mu_b.shape, mu_b)
+    import sys
+    sys.exit(1)
+
+
+    # Difference Matrix
+    I_a  = np.ones(t_a.shape)
+    H_a  = np.abs(mu_a@I_a.T - I_a@ mu_a.T)
+
+    I_b = np.ones(x_b.shape)
+    H_b = np.abs(mu_b@I_b.T - I_b@ mu_b.T)
+
+    H_ab = np.abs(th_a @I_b.T  - I_a @ th_b.T)
+
+    def corr(d):
+        return (1 + phi*np.abs(d))*np.exp(-phi*d)
+
+    # Build covariance matrix
+    Sigma_a = corr(H_a)
+    Sigma_b = corr(H_b)
+    Sigma_ab = corr(H_ab)
+
+    Sigma_b_inv = np.linalg.inv(Sigma_b)
+    E_a_b = mu_a - Sigma_ab @ Sigma_b_inv @ ( x_b - E_y_b)
+    var_a_b = Sigma_a - Sigma_ab @ Sigma_b_inv @ Sigma_ab.T
+
+
+# Inital expected value
+E = 0.5
 
 # Grid
 th_0 = 0.25
 th_1 = 0.50
-n_a = 6
-th_a = np.linspace(th_0, th_1,  n_a  )
-th_a = th_a[:, np.newaxis]
-I_a  = np.ones((n_a,1))
-H_a  = np.abs(th_a@I_a.T - I_a@ th_a.T)
-E_y = 0.5
-sigma_y = 0.5**2
-
+n = 51
+th = np.linspace(th_0, th_1,  n  )
+th = th[:, np.newaxis]
+E_y = E*np.ones(th.shape)
 
 # Given data
 y_b =     np.array([ 0.5, 0.32, 0.40, 0.35, 0.60])
-th_b =  np.array([ 0.3, 0.35, 0.39, 0.41, 0.45])
-n_b = th_b.shape[0]
+th_b =  np.array([   0.3, 0.35, 0.39, 0.41, 0.45])
 th_b = th_b[:, np.newaxis]
-I_b = np.ones(( n_b, 1))
-H_b = np.abs(th_b@I_b.T - I_b@ th_b.T)
+
 E_y_b = np.mean(y_b)
+print( "E_y_b: ", E_y_b)
 
-# Internal difference
-H_ab = np.abs(th_a @I_b.T  - I_a @ th_b.T)
+#print( "(th, ey, thb, eyb, yb)", th.shape, E_y.shape,  th_b.shape, E_y_b.shape,  y_b.shape)
+#print( y_b.shape)
 
-def corr(d):
-    return (1 + 15*np.abs(d))*np.exp(-15*d)
+E, Var = gauss_process(t_a=th, mu_a=E_y, t_b=th_b, mu_b=E_y_b, x_b=y_b)
 
-# Build covariance matrix
-sigma_a = 1
-sigma_b = 1
-Sigma_a = corr(H_a)
-Sigma_b = corr(H_b)
-Sigma_ab = corr(H_ab)
+plt.scatter( th_b, y_b, label = "Data")
+plt.plot( th, E, label = "Expected values" )
+plt.legend()
+plt.show()
