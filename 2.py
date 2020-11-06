@@ -5,12 +5,6 @@ import matplotlib.pyplot as plt
 
 def gauss_process(t_a, mu_a, t_b, mu_b, x_b, sigma=0.5**2, phi=15):
 
-    print("shapes")
-    print(mu_b.shape, mu_b)
-    import sys
-    sys.exit(1)
-
-
     # Difference Matrix
     I_a  = np.ones(t_a.shape)
     H_a  = np.abs(mu_a@I_a.T - I_a@ mu_a.T)
@@ -29,9 +23,10 @@ def gauss_process(t_a, mu_a, t_b, mu_b, x_b, sigma=0.5**2, phi=15):
     Sigma_ab = corr(H_ab)
 
     Sigma_b_inv = np.linalg.inv(Sigma_b)
-    E_a_b = mu_a - Sigma_ab @ Sigma_b_inv @ ( x_b - E_y_b)
+    E_a_b = mu_a + Sigma_ab @ Sigma_b_inv @ ( x_b - E_y_b)
     var_a_b = Sigma_a - Sigma_ab @ Sigma_b_inv @ Sigma_ab.T
 
+    return E_a_b, var_a_b
 
 # Inital expected value
 E = 0.5
