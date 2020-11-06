@@ -20,23 +20,22 @@ def gauss_process(t_a, mu_a, mu_b, t_b, x_b, sigma=0.5**2, phi=15):
     Sigma_a = corr(H_a)
     Sigma_b = corr(H_b)
     Sigma_ab = corr(H_ab)
-    print(H_b)
 
     Sigma_b_inv = np.linalg.inv(Sigma_b)
 
-    E_a_b = mu_a + Sigma_ab @ Sigma_b_inv @ (x_b - mu_b)
-    var_a_b = Sigma_a - Sigma_ab @ Sigma_b_inv @ Sigma_ab.T
-    return E_a_b, var_a_b
+    E_ab = mu_a + Sigma_ab @ Sigma_b_inv @ (x_b - mu_b)
+    var_ab = Sigma_a - Sigma_ab @ Sigma_b_inv @ Sigma_ab.T
+    return E_ab, var_ab
 
 
 # Grid
 t_0 = 0.25
 t_1 = 0.50
+E = 0.5
 n = 51
-<<<<<<< HEAD
-th = np.linspace(th_0, th_1,  n  )
+th = np.linspace(t_0, t_1,  n  )
 th = th[:, np.newaxis]
-E_y = E*np.ones(th.shape)
+E_y = 0.5*np.ones(th.shape)
 
 # Given data
 y_b =     np.array([ 0.5, 0.32, 0.40, 0.35, 0.60])
@@ -44,15 +43,34 @@ y_b = y_b[:, np.newaxis]
 
 th_b =  np.array([   0.3, 0.35, 0.39, 0.41, 0.45])
 th_b = th_b[:, np.newaxis]
-
 E_y_b = E*np.ones(y_b.shape)
-
 E, Var = gauss_process(t_a=th, mu_a=E_y, t_b=th_b, mu_b=E_y_b, x_b=y_b)
-
-print(E.shape, Var.shape)
-
-
+E = E[:,0]
+th = th[:,0]
+Var_diag = np.diagonal(Var)
+E_l = E - Var_diag*1.645
+E_u = E + Var_diag*1.645
 plt.scatter( th_b, y_b, label = "Data")
 plt.plot( th, E, label = "Expected values" )
+plt.fill_between(th, E_l, E_u, color="gray", alpha  = 0.5)
+plt.xlabel(r"$\theta$", size=20)
+plt.ylabel(r'$y(\theta)$', size=20)
+plt.title("Mean vector and 90% Prediction interval", size=15)
+plt.savefig("gp.png")
+plt.grid()
 plt.legend()
 plt.show()
+
+p = norm(loc = E, scale = np.sqrt(Var_diag)).cdf(0.3)
+
+plt.plot( th, p, label = "Expected values" )
+plt.xlabel(r"$\theta$", size=20)
+plt.ylabel(r'$p(\theta)$', size=20)
+plt.title("Probability " + r'$Y(\theta) < 0.3 $', size=15)
+plt.savefig("prob_2.png")
+plt.grid()
+plt.legend()
+plt.show()
+
+
+
