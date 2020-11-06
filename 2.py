@@ -50,6 +50,11 @@ E_y_b = E*np.ones(y_b.shape)
 
 E, Var = gauss_process(t_a=th, mu_a=E_y, t_b=th_b, mu_b=E_y_b, x_b=y_b)
 
+print(E.shape, Var.shape)
+
+# Find cumulative distrobution.
+from scipy.stats import norm
+
 plt.scatter( th_b, y_b, label = "Data")
 plt.plot( th, E, label = "Expected values" )
 plt.legend()
