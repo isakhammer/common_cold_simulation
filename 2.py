@@ -45,10 +45,6 @@ th_b =  np.array([   0.3, 0.35, 0.39, 0.41, 0.45])
 th_b = th_b[:, np.newaxis]
 
 E_y_b = np.mean(y_b)
-print( "E_y_b: ", E_y_b)
-
-#print( "(th, ey, thb, eyb, yb)", th.shape, E_y.shape,  th_b.shape, E_y_b.shape,  y_b.shape)
-#print( y_b.shape)
 
 E, Var = gauss_process(t_a=th, mu_a=E_y, t_b=th_b, mu_b=E_y_b, x_b=y_b)
 
