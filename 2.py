@@ -12,11 +12,15 @@ def gauss_process(t_a, mu_a, t_b, mu_b, x_b, sigma=0.5**2, phi=15):
     I_b = np.ones(x_b.shape)
     H_b = np.abs(mu_b@I_b.T - I_b@ mu_b.T)
 
+<<<<<<< Updated upstream
     print(t_a.shape ,I_b.shape  ,I_a.shape , t_b.shape)
     H_ab = np.abs(t_a @I_b.T  - I_a @ t_b.T)
+=======
+    H_ab = np.abs(t_a @ I_b.T - I_a @ th_b.T)
+>>>>>>> Stashed changes
 
     def corr(d):
-        return (1 + phi*np.abs(d))*np.exp(-phi*d)
+        return (1 + phi*d)*np.exp(-phi*d)
 
     # Build covariance matrix
     Sigma_a = corr(H_a)
