@@ -12,7 +12,8 @@ def gauss_process(t_a, mu_a, t_b, mu_b, x_b, sigma=0.5**2, phi=15):
     I_b = np.ones(x_b.shape)
     H_b = np.abs(mu_b@I_b.T - I_b@ mu_b.T)
 
-    H_ab = np.abs(th_a @I_b.T  - I_a @ th_b.T)
+    print(t_a.shape ,I_b.shape  ,I_a.shape , t_b.shape)
+    H_ab = np.abs(t_a @I_b.T  - I_a @ t_b.T)
 
     def corr(d):
         return (1 + phi*np.abs(d))*np.exp(-phi*d)
@@ -21,6 +22,8 @@ def gauss_process(t_a, mu_a, t_b, mu_b, x_b, sigma=0.5**2, phi=15):
     Sigma_a = corr(H_a)
     Sigma_b = corr(H_b)
     Sigma_ab = corr(H_ab)
+
+    print(Sigma_a.shape, Sigma_b.shape, Sigma_ab.shape)
 
     Sigma_b_inv = np.linalg.inv(Sigma_b)
     E_a_b = mu_a + Sigma_ab @ Sigma_b_inv @ ( x_b - E_y_b)
@@ -41,10 +44,12 @@ E_y = E*np.ones(th.shape)
 
 # Given data
 y_b =     np.array([ 0.5, 0.32, 0.40, 0.35, 0.60])
+y_b = y_b[:, np.newaxis]
+
 th_b =  np.array([   0.3, 0.35, 0.39, 0.41, 0.45])
 th_b = th_b[:, np.newaxis]
 
-E_y_b = np.mean(y_b)
+E_y_b = E*np.ones(y_b.shape)
 
 E, Var = gauss_process(t_a=th, mu_a=E_y, t_b=th_b, mu_b=E_y_b, x_b=y_b)
 
