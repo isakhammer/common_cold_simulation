@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
+# sadklasd
 
 def gauss_process(t_a, mu_a, t_b, mu_b, x_b, sigma=0.5**2, phi=15):
 
