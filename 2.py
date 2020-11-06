@@ -7,7 +7,7 @@ def gauss_process(t_a, mu_a, t_b, mu_b, x_b, sigma=0.5**2, phi=15):
 
     # Difference Matrix
     I_a  = np.ones(t_a.shape)
-    H_a  = np.abs(mu_a@I_a.T - I_a@ mu_a.T)
+    H_a  = np.abs(t_a@I_a.T - I_a@ mu_a.T)
 
     I_b = np.ones(x_b.shape)
     H_b = np.abs(t_b@I_b.T - I_b@ t_b.T)
