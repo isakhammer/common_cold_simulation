@@ -10,9 +10,7 @@ def gauss_process(t_a, mu_a, t_b, mu_b, x_b, sigma=0.5**2, phi=15):
     H_a  = np.abs(mu_a@I_a.T - I_a@ mu_a.T)
 
     I_b = np.ones(x_b.shape)
-    H_b = np.abs(mu_b@I_b.T - I_b@ mu_b.T)
-
-    print(t_a.shape ,I_b.shape  ,I_a.shape , t_b.shape)
+    H_b = np.abs(t_b@I_b.T - I_b@ t_b.T)
     H_ab = np.abs(t_a @I_b.T  - I_a @ t_b.T)
 
     def corr(d):
@@ -23,9 +21,8 @@ def gauss_process(t_a, mu_a, t_b, mu_b, x_b, sigma=0.5**2, phi=15):
     Sigma_b = corr(H_b)
     Sigma_ab = corr(H_ab)
 
-    print(Sigma_a.shape, Sigma_b.shape, Sigma_ab.shape)
-
     Sigma_b_inv = np.linalg.inv(Sigma_b)
+
     E_a_b = mu_a + Sigma_ab @ Sigma_b_inv @ ( x_b - E_y_b)
     var_a_b = Sigma_a - Sigma_ab @ Sigma_b_inv @ Sigma_ab.T
 
