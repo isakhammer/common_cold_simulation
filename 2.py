@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.stats import norm
 
 
 def gauss_process(t_a, mu_a, mu_b, t_b, x_b, sigma=0.5**2, phi=15):
@@ -50,21 +51,8 @@ E, Var = gauss_process(t_a=th, mu_a=E_y, t_b=th_b, mu_b=E_y_b, x_b=y_b)
 
 print(E.shape, Var.shape)
 
-# Find cumulative distrobution.
-from scipy.stats import norm
 
 plt.scatter( th_b, y_b, label = "Data")
 plt.plot( th, E, label = "Expected values" )
-=======
-t_a = np.linspace(t_0, t_1, n).reshape(n, 1)
-y_b = np.array([0.5, 0.32, 0.40, 0.35, 0.60]).reshape(5, 1)
-t_b = np.array([0.3, 0.35, 0.39, 0.41, 0.45]).reshape(5, 1)
-mu_a = 0.5 * np.ones((51, 1))
-mu_b = 0.5 * np.ones((5, 1))
-E, Var = gauss_process(t_a, mu_a, mu_b, t_b, y_b)
-print(E.shape, Var.shape)
-plt.scatter(t_b, y_b, label="Data")
-plt.plot(t_a, E, label="Expected values" )
->>>>>>> master
 plt.legend()
 plt.show()
