@@ -33,9 +33,9 @@ def generate_plots(E, t_A, t_B, y_B):
     mu_AcB_u = mu_AcB + np.sqrt(var_A) * 1.645
     fig, (ax0, ax1) = plt.subplots(1, 2)
     ax0.scatter(t_B, y_B, label="Data")
-    ax0.plot(t_A, mu_AcB, label=r'\mu_{A \mid B}')
+    ax0.plot(t_A, mu_AcB, label=r'$\mu_{A \mid B}$')
     ax0.fill_between(t_A, mu_AcB_l, mu_AcB_u, color="gray", alpha=0.5)
-    ax0.set_xlabel(r"$\theta$", size=20)
+    ax0.set_xlabel(r'$\theta$', size=20)
     ax0.set_ylabel(r'$y(\theta)$', size=20)
     ax0.set_title("Mean vector and 90% Prediction interval", size=15)
     #ax0.savefig("gp.png")
