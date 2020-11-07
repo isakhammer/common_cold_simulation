@@ -26,11 +26,10 @@ def gauss_process(mu_A, mu_B, t_A, t_B, y_B, corr=matern_15, Var=0.5**2):
     return mu_AcB, Sigma_AcB
 
 
-def generate_plots(E, t_A, t_B, y_B):
+def generate_plots(E, t_A, t_B, y_B, filename):
     mu_A, mu_B = E * np.ones_like(t_A), E * np.ones_like(t_B)
     mu_AcB, Sigma_AcB = gauss_process(mu_A, mu_B, t_A, t_B, y_B, matern_15)
     var_A = np.diagonal(Sigma_AcB)
-    #print(len(var_A[var_A < 0]))
     mu_AcB_l = mu_AcB - np.sqrt(var_A) * 1.645
     mu_AcB_u = mu_AcB + np.sqrt(var_A) * 1.645
     fig, (ax0, ax1) = plt.subplots(1, 2)
@@ -40,31 +39,31 @@ def generate_plots(E, t_A, t_B, y_B):
     ax0.set_xlabel(r'$\theta$', size=20)
     ax0.set_ylabel(r'$y(\theta)$', size=20)
     ax0.set_title(r'$\mathbf{\mu}_{A \mid B}$' + " and 90% prediction interval of " r'$y(\theta)$', size=15)
-    #ax0.savefig("gp.png")
     ax0.grid()
     ax0.legend(prop={"size": 15})
 
     ###
     p = norm(loc=mu_AcB, scale=np.sqrt(var_A)).cdf(0.3)
+    print("opt theta_", t_A[np.argmax(p)])
     ax1.plot(t_A, p)
     ax1.set_xlabel(r"$\theta$", size=20)
     ax1.set_ylabel(r'$\mathrm{Pr}\{\theta < 0.3\}$', size=20)
     ax1.set_title(r'$\mathrm{Pr}\{\theta < 0.3\}$', size=20)
-    #ax1.savefig("prob_2.png")
+    plt.savefig(filename)
     ax1.grid()
     plt.show()
 
 # 5 evaluation points
 t_0, t_1, E, n = 0.25, 0.50, 0.5, 51
 t_A = np.linspace(t_0, t_1, n)
-#t_B = np.array([0.3, 0.35, 0.39, 0.41, 0.45])
-#y_B = np.array([0.5, 0.32, 0.40, 0.35, 0.60])
-#generate_plots(E, t_A, t_B, y_B)
+t_B = np.array([0.3, 0.35, 0.39, 0.41, 0.45])
+y_B = np.array([0.5, 0.32, 0.40, 0.35, 0.60])
+generate_plots(E, t_A, t_B, y_B, "plot_1")
 
 # 6 evaluation points
 t_B = np.array([0.3, 0.33, 0.35, 0.39, 0.41, 0.45])
 y_B = np.array([0.5, 0.4, 0.32, 0.40, 0.35, 0.60])
-generate_plots(E, t_A, t_B, y_B)
+generate_plots(E, t_A, t_B, y_B, "plot_2")
 
 
 

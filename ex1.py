@@ -39,8 +39,6 @@ def simulate_process(T, params):
     heavy_infection_starts = (times1[indicies[states1 == 2] - 1])[1:]
     w_values = heavy_infection_starts - heavy_infection_ends
     print("mean w:", np.mean(w_values))
-    #plt.plot(heavy_infection_starts - heavy_infection_ends)
-    #plt.show()
     return times1, states1
 
 
@@ -65,7 +63,6 @@ def plot_process(times, states):
 
 params = {"alpha": 0.1, "lambda": 100, "mu_L": 7, "mu_H": 20}
 times, states = simulate_process(365*1000, params)
-#plot_process(times, states)
 
 def process_2(T, params):
     infections = T // 10
