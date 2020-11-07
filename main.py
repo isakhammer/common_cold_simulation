@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 from stoch_mod_project_2 import P1
 from stoch_mod_project_2 import P2
 
