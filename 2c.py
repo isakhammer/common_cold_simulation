@@ -82,13 +82,5 @@ plt.legend()
 plt.show()
 
 
-print("Best theta: ", th[np.argmax(Var_diag)])
-plt.plot( th, Var_diag, label = "Expected values" )
-plt.xlabel(r"$\theta$", size=20)
-plt.ylabel(r'$p(\theta)$', size=20)
-plt.title("Var ", size=15)
-plt.savefig("var_2c.png")
-plt.grid()
-plt.legend()
-plt.show()
+print("Best choice for next theta: ", th[np.argmax( p )])
 
