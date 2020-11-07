@@ -17,8 +17,8 @@ def matern_15(d):
 
 def gauss_process(mu_A, mu_B, t_A, t_B, y_B, corr=matern_15, Var=0.5**2):
     mu_A, mu_B, t_A, t_B, y_B = transpose_1d_arrs([mu_A, mu_B, t_A, t_B, y_B])
-    H_A, H_B, H_AB = [dm(t[0], t[1], p=1) for t in [(t_A, t_A), (t_B, t_B), (t_A, t_B)]]
-    Sigma_A, Sigma_B, Sigma_AB = [Var * corr(H) for H in [H_A, H_B, H_AB]]
+    H_list = [dm(t[0], t[1], p=1) for t in [(t_A, t_A), (t_B, t_B), (t_A, t_B)]]
+    Sigma_A, Sigma_B, Sigma_AB = [Var * corr(H) for H in H_list]
     Sigma_B_inv = np.linalg.inv(Sigma_B)
     mu_AcB = (mu_A + Sigma_AB @ Sigma_B_inv @ (y_B - mu_B))[:, 0]
     Sigma_AcB = Sigma_A - Sigma_AB @ Sigma_B_inv @ Sigma_AB.T
@@ -29,8 +29,8 @@ def generate_plots(E, t_A, t_B, y_B):
     mu_A, mu_B = E * np.ones_like(t_A), E * np.ones_like(t_B)
     mu_AcB, Sigma_AcB = gauss_process(mu_A, mu_B, t_A, t_B, y_B, matern_15)
     var_A = np.diagonal(Sigma_AcB)
-    mu_AcB_l = mu_AcB - var_A * 1.645
-    mu_AcB_u = mu_AcB + var_A * 1.645
+    mu_AcB_l = mu_AcB - np.sqrt(var_A) * 1.645
+    mu_AcB_u = mu_AcB + np.sqrt(var_A) * 1.645
     fig, (ax0, ax1) = plt.subplots(1, 2)
     ax0.scatter(t_B, y_B, label="Data")
     ax0.plot(t_A, mu_AcB, label=r'\mu_{A \mid B}')
