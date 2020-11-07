@@ -44,7 +44,7 @@ def generate_plots(E, t_A, t_B, y_B, filename):
 
     ###
     p = norm(loc=mu_AcB, scale=np.sqrt(var_A)).cdf(0.3)
-    print("opt theta_", t_A[np.argmax(p)])
+    print("opt theta_", round(t_A[np.argmax(p)], 2))
     ax1.plot(t_A, p)
     ax1.set_xlabel(r"$\theta$", size=20)
     ax1.set_ylabel(r'$\mathrm{Pr}\{\theta < 0.3\}$', size=20)
@@ -53,17 +53,6 @@ def generate_plots(E, t_A, t_B, y_B, filename):
     ax1.grid()
     plt.show()
 
-# 5 evaluation points
-t_0, t_1, E, n = 0.25, 0.50, 0.5, 51
-t_A = np.linspace(t_0, t_1, n)
-t_B = np.array([0.3, 0.35, 0.39, 0.41, 0.45])
-y_B = np.array([0.5, 0.32, 0.40, 0.35, 0.60])
-generate_plots(E, t_A, t_B, y_B, "plot_1")
-
-# 6 evaluation points
-t_B = np.array([0.3, 0.33, 0.35, 0.39, 0.41, 0.45])
-y_B = np.array([0.5, 0.4, 0.32, 0.40, 0.35, 0.60])
-generate_plots(E, t_A, t_B, y_B, "plot_2")
 
 
 

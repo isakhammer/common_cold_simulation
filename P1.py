@@ -31,14 +31,16 @@ def simulate_process(T, params):
     state_space = np.array([0, 1, 2])
     long_run_mean_fractions_vec = func(state_space)
     long_run_mean_fractions_vec /= np.sum(long_run_mean_fractions_vec)
-    print(long_run_mean_fractions_vec)
-    print(1 - long_run_mean_fractions_vec[0])
-    print("final time:", times1[-1])
+    print("estimated long run mean fraction vector: ", long_run_mean_fractions_vec)
+    print("estimated long run mean infected fraction: ", 1 - long_run_mean_fractions_vec[0])
     indicies = np.arange(0, len(states1), 1)
     heavy_infection_ends = (times1[indicies[states1 == 2]])[:-1]
     heavy_infection_starts = (times1[indicies[states1 == 2] - 1])[1:]
     w_values = heavy_infection_starts - heavy_infection_ends
-    print("mean w:", np.mean(w_values))
+    if len(w_values != 0):
+        print("mean time between heavy infections:", np.mean(w_values))
+    else:
+        print("less than two heavy infections")
     return times1, states1
 
 
@@ -51,7 +53,6 @@ def plot_process(times, states):
     ax.set_xlabel("Year", size=40)
     ax.set_ylabel("State", size=40)
     years = times[-1]//365 + 1
-    print(years)
     ax.set_xticks(np.arange(0, years * 365 + 1, 365))
     ax.set_xticklabels(np.arange(0, years + 1, 1).astype(int))
     ax.set_yticks([0, 1, 2])
@@ -61,8 +62,6 @@ def plot_process(times, states):
     ax.plot(times_to_plot, states_to_plot)
     plt.show()
 
-params = {"alpha": 0.1, "lambda": 100, "mu_L": 7, "mu_H": 20}
-times, states = simulate_process(365*1000, params)
 
 def process_2(T, params):
     infections = T // 10
@@ -87,13 +86,14 @@ def process_2(T, params):
     state_space = np.array([0, 1, 2])
     long_run_mean_fractions_vec = func(state_space)
     long_run_mean_fractions_vec /= np.sum(long_run_mean_fractions_vec)
-    print(long_run_mean_fractions_vec)
-    print(1 - long_run_mean_fractions_vec[0])
-    print("final time:", times1[-1])
+    print("estimated long run mean fraction vector: ", long_run_mean_fractions_vec)
+    print("estimated long run mean infected fraction: ", 1 - long_run_mean_fractions_vec[0])
     indicies = np.arange(0, len(states1), 1)
     heavy_infection_ends = (times1[indicies[states1 == 2]])[:-1]
     heavy_infection_starts = (times1[indicies[states1 == 2] - 1])[1:]
     w_values = heavy_infection_starts - heavy_infection_ends
-    print("mean w:", np.mean(w_values))
-    # plt.plot(heavy_infection_starts - heavy_infection_ends)
-    # plt.show()
+    if len(w_values != 0):
+        print("mean time between heavy infections:", np.mean(w_values))
+    else:
+        print("less than two heavy infections")
+    return times1, states1
