@@ -21,8 +21,8 @@ def gauss_process(mu_A, mu_B, t_A, t_B, y_B, corr=matern_15, Var=0.5**2):
     Sigma_A, Sigma_B, Sigma_AB = [Var * corr(H) for H in H_list]
     Sigma_B_inv = np.linalg.inv(Sigma_B)
     mu_AcB = (mu_A + Sigma_AB @ Sigma_B_inv @ (y_B - mu_B))[:, 0]
-    print([np.min(Sigma) for Sigma in [Sigma_A, Sigma_B, Sigma_AB]])
     Sigma_AcB = Sigma_A - Sigma_AB @ Sigma_B_inv @ Sigma_AB.T
+    Sigma_AcB[Sigma_AcB < 0] = 10**(-15)
     return mu_AcB, Sigma_AcB
 
 
@@ -30,7 +30,7 @@ def generate_plots(E, t_A, t_B, y_B):
     mu_A, mu_B = E * np.ones_like(t_A), E * np.ones_like(t_B)
     mu_AcB, Sigma_AcB = gauss_process(mu_A, mu_B, t_A, t_B, y_B, matern_15)
     var_A = np.diagonal(Sigma_AcB)
-    print(np.min(var_A))
+    #print(len(var_A[var_A < 0]))
     mu_AcB_l = mu_AcB - np.sqrt(var_A) * 1.645
     mu_AcB_u = mu_AcB + np.sqrt(var_A) * 1.645
     fig, (ax0, ax1) = plt.subplots(1, 2)
@@ -57,9 +57,9 @@ def generate_plots(E, t_A, t_B, y_B):
 # 5 evaluation points
 t_0, t_1, E, n = 0.25, 0.50, 0.5, 51
 t_A = np.linspace(t_0, t_1, n)
-t_B = np.array([0.3, 0.35, 0.39, 0.41, 0.45])
-y_B = np.array([0.5, 0.32, 0.40, 0.35, 0.60])
-generate_plots(E, t_A, t_B, y_B)
+#t_B = np.array([0.3, 0.35, 0.39, 0.41, 0.45])
+#y_B = np.array([0.5, 0.32, 0.40, 0.35, 0.60])
+#generate_plots(E, t_A, t_B, y_B)
 
 # 6 evaluation points
 t_B = np.array([0.3, 0.33, 0.35, 0.39, 0.41, 0.45])
