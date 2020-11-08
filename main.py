@@ -1,6 +1,6 @@
 import numpy as np
-from stoch_mod_project_2 import P1
-from stoch_mod_project_2 import P2
+import P1
+import P2
 
 """
 Problem 1
